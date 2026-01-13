@@ -1,9 +1,7 @@
-//_components/OrderForm.tsx
+//_components/OrderForm2.tsx
 
 "use client";
 
-// import { useActionState } from "react";
-// import { submitOrder } from "../order/action";
 import { MENU } from "../_menuConfig/menu";
 import MenuItem from "./MenuItem";
 import Button from "./ui/Button";
@@ -13,7 +11,7 @@ import PhoneInput from "./PhoneInput";
 import { MenuItemType, MenuKEY } from "../_models/order";
 import Link from "next/link";
 import React, { useState } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 type Props = { initialState: InitialStateType };
 
@@ -30,7 +28,7 @@ export default function OrderForm({ initialState }: Props) {
     const formData = new FormData(e.currentTarget);
     const payload = Object.fromEntries(formData.entries());
 
-    const res = await fetch("api/order/submit", {
+    const res = await fetch("/api/order/submit", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
