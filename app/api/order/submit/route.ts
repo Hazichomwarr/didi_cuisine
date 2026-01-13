@@ -1,16 +1,15 @@
-// app/order/actions.ts
+// app/api/order/submit/route.ts
 "use server";
 
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
-import { MenuKEY, UserInfoSanitized } from "../_models/order";
-import { InitialStateType } from "./page";
-import { orderTotalPrice } from "../_utils/formConfig";
+import { NextResponse } from "next/server";
+import { MenuKEY, UserInfoSanitized } from "@/app/_models/order";
+import { orderTotalPrice } from "@/app/_utils/formConfig";
 import {
   parsePhoneNumberFromString,
   isValidPhoneNumber,
 } from "libphonenumber-js";
-import { MENU } from "../_menuConfig/menu";
+import { MENU } from "@/app/_menuConfig/menu";
 
 type OrderErrors = {
   name?: string;
@@ -20,14 +19,14 @@ type OrderErrors = {
   menuItems?: string;
 };
 
-export async function submitOrder(
-  prevState: InitialStateType,
-  formData: FormData
-) {
-  const raw = Object.fromEntries(formData.entries());
-  console.log("raw:", raw);
+export async function POST(req: Request) {
+  const formData = await req.json();
+  console.log("formData_raw:", formData);
 
-  const menuItems = Object.entries(raw)
+  //   const raw = Object.fromEntries(formData.entries());
+  //   console.log("raw:", raw);
+
+  const menuItems = Object.entries(formData)
     .filter(([key]) => key.startsWith("items["))
     .map(([key, value]) => {
       const productId = key.match(/items\[(.*)\]/)?.[1];
@@ -37,15 +36,14 @@ export async function submitOrder(
 
   //default values for name, phone, delivery options and notes
   const userInfos: UserInfoSanitized = {
-    name: raw.name?.toString().trim(),
-
-    phone: parsePhoneNumberFromString(
-      raw.phone?.toString().trim(),
-      "US"
-    )!.format("E.164"),
-    deliveryOption: raw.deliveryOption?.toString().trim(),
-    address: raw.address?.toString().trim(),
-    notes: raw.notes?.toString().trim(),
+    name: formData.name?.trim(),
+    phone:
+      parsePhoneNumberFromString(formData.phone?.trim(), "US")?.format(
+        "E.164"
+      ) ?? "",
+    deliveryOption: formData.deliveryOption?.trim(),
+    address: formData.address?.trim(),
+    notes: formData.notes?.trim(),
   };
 
   // console.log("phone-number:", userInfos.phone);
@@ -74,13 +72,13 @@ export async function submitOrder(
 
   if (Object.keys(missingInputs).length > 0) {
     console.log("missings:", missingInputs);
-    const total = 0;
-    return { errors: missingInputs, values: { userInfos, menuItems, total } };
+    // const total = 0;
+    // return { errors: missingInputs, values: { userInfos, menuItems, total } };
+    return NextResponse.json({ errors: missingInputs }, { status: 400 });
   }
 
   //Order Total Price
   const total = orderTotalPrice(menuItems, MENU);
-  console.log("orderTotal price:", total);
 
   //create OrderDraft
   const orderDraft = {
@@ -91,7 +89,7 @@ export async function submitOrder(
   };
   console.log("order-draft:", orderDraft);
 
-  //Persist draft (temporary)
+  //Persist draft
   const cookieStore = await cookies();
   cookieStore.set("order_draft", JSON.stringify(orderDraft), {
     httpOnly: true,
@@ -99,6 +97,5 @@ export async function submitOrder(
     maxAge: 60 * 10, //10mins
   });
 
-  //Move flow forward
-  redirect("order/review");
+  return NextResponse.json({ success: true });
 }

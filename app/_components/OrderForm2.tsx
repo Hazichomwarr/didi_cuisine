@@ -2,8 +2,8 @@
 
 "use client";
 
-import { useActionState } from "react";
-import { submitOrder } from "../order/action";
+// import { useActionState } from "react";
+// import { submitOrder } from "../order/action";
 import { MENU } from "../_menuConfig/menu";
 import MenuItem from "./MenuItem";
 import Button from "./ui/Button";
@@ -12,18 +12,41 @@ import { InitialStateType } from "../order/page";
 import PhoneInput from "./PhoneInput";
 import { MenuItemType, MenuKEY } from "../_models/order";
 import Link from "next/link";
+import React, { useState } from "react";
+import { useRouter } from "next/router";
 
 type Props = { initialState: InitialStateType };
 
 export default function OrderForm({ initialState }: Props) {
-  const [state, action] = useActionState(submitOrder, initialState);
+  const router = useRouter();
+  const [errors, setErrors] = useState(initialState.errors);
 
-  const { errors, values } = state;
+  const values = initialState.values;
   const MenuKeys = Object.keys(MENU) as MenuKEY[];
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    const formData = new FormData(e.currentTarget);
+    const payload = Object.fromEntries(formData.entries());
+
+    const res = await fetch("api/order/submit", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    if (!res.ok) {
+      const data = await res.json();
+      setErrors(data.errors);
+      return;
+    }
+    router.push("order/review");
+  }
 
   return (
     <form
-      action={action}
+      onSubmit={handleSubmit}
       className="w-full max-w-2xl mx-auto space-y-6 p-6 rounded-2xl shadow-xl bg-white"
     >
       <div className="w-full bg-gray-50 rounded-xl p-4 space-y-3">

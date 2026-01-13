@@ -1,6 +1,6 @@
 //app/order/page.tsx
 import { cookies } from "next/headers";
-import OrderForm from "../_components/OrderForm";
+import OrderForm2 from "../_components/OrderForm";
 import { OrderDraftType } from "../_models/order";
 import PageTransition from "../_components/ui/PageTransition";
 
@@ -44,7 +44,7 @@ export default async function OrderPage() {
         <div className="absolute inset-0 bg-black/50" />
         <div className="relative z-10 w-full flex flex-col items-center space-y-6">
           <h3 className="text-3xl font-semibold text-white">{headerString}</h3>
-          <OrderForm initialState={initialState} />
+          <OrderForm2 initialState={initialState} />
         </div>
       </div>
     </PageTransition>
