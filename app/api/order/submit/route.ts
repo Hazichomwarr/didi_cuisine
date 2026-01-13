@@ -98,3 +98,7 @@ export async function POST(req: Request) {
 
   return NextResponse.json({ success: true });
 }
+
+export async function OPTIONS() {
+  return NextResponse.json({}, { status: 200 });
+}

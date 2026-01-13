@@ -33,6 +33,7 @@ export default function OrderForm({ initialState }: Props) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     });
+    console.log("res:", res);
 
     if (!res.ok) {
       const data = await res.json();
