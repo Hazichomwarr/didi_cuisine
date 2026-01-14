@@ -80,10 +80,7 @@ export async function POST() {
     cookieStore.delete("order_draft"); //Delete the cookie
     return NextResponse.json({}, { status: 200 });
   } catch (err) {
-    console.error("Failed to send Email");
-    return NextResponse.json(
-      { error: "Failed to sent Email" },
-      { status: 500 }
-    );
+    console.error("Failed to send Email", err);
+    return NextResponse.json({ error: err }, { status: 500 });
   }
 }

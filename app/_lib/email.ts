@@ -1,15 +1,7 @@
+//app/_lib/email.ts
 import sgMail from "@sendgrid/mail";
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY!);
-
-// type OrderEmailPayload = {
-//   orderId: string;
-//   name: string;
-//   phone: string;
-//   total: number;
-//   items: string;
-//   notes?: string;
-// };
 
 export async function sendOrderEmail(payload: string) {
   const msg = {
@@ -19,5 +11,7 @@ export async function sendOrderEmail(payload: string) {
     text: payload,
   };
 
-  await sgMail.send(msg);
+  const [response] = await sgMail.send(msg);
+  console.log("SendGrid status:", response.statusCode);
+  console.log("SendGrid headers:", response.headers);
 }
