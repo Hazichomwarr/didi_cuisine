@@ -41,7 +41,7 @@ export async function POST() {
   const receipt = `🍽️ NEW ORDER - DIDI'S CUISINE
   Order ID: ${orderId}
   Placed: ${timestamp}
-  ETA: ${ETA}
+  
 
   Customer:
   👤 Name: ${name}
@@ -56,7 +56,8 @@ export async function POST() {
   ${isDelivery ? `🚚 Delivery: +5.00` : "\t------------"}
   💵 Total: ${isDelivery ? orderDraft.total + 5 : orderDraft.total}
   
-  Thank you for your order 🙏`;
+  Thank you for your order 🙏
+  ETA: ${ETA}`;
 
   // (option-1): Send it via whatsAPP
   // const encodedMessage = encodeURIComponent(receipt);

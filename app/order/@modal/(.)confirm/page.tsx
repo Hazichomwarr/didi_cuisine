@@ -17,7 +17,7 @@ export default function ConfirmModal() {
 
         <button
           onClick={() => router.push("/")}
-          className="w-full rounded-lg bg-black text-white py-2"
+          className="w-full rounded-lg bg-black text-white py-2 cursor-pointer hover:bg-neutral-700"
         >
           Close
         </button>
