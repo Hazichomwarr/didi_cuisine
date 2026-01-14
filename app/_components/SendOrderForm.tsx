@@ -36,7 +36,7 @@ export default function SendOrderForm() {
         type="submit"
         disabled={loading}
       >
-        {loading ? "sending..." : "Send Order"}
+        {loading ? "..." : "Send Order"}
       </Button>
     </form>
   );

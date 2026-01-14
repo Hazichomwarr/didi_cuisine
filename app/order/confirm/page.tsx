@@ -1,6 +1,7 @@
 //app/order/confirm/page.tsx
 
 import PageTransition from "@/app/_components/ui/PageTransition";
+import Link from "next/link";
 
 export default function ConfirmPage() {
   return (
@@ -17,12 +18,12 @@ export default function ConfirmPage() {
             You’ll receive an e-receipt on your phone shortly.
           </p>
 
-          <a
+          <Link
             href="/"
             className="inline-block mt-4 rounded-xl bg-green-700 text-white px-6 py-3 hover:bg-green-800 active:scale-95 transition"
           >
             Close
-          </a>
+          </Link>
         </div>
       </div>
     </PageTransition>

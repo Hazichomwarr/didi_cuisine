@@ -9,7 +9,7 @@ import { sendSMS } from "@/app/_lib/twilio";
 
 const BUSINESS_PHONE = "+19294537790";
 
-export async function POST(req: Request) {
+export async function POST() {
   const cookieStore = await cookies();
   const cookie = cookieStore.get("order_draft");
   if (!cookie) return NextResponse.json({}, { status: 403 });
