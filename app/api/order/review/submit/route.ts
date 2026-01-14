@@ -6,6 +6,7 @@ import { cookies } from "next/headers";
 import { OrderDraftType } from "@/app/_models/order";
 import { MENU } from "@/app/_menuConfig/menu";
 import { sendSMS } from "@/app/_lib/twilio";
+import { sendOrderEmail } from "@/app/_lib/email";
 
 const BUSINESS_PHONE = "+19294537790";
 
@@ -62,13 +63,26 @@ export async function POST() {
   // redirect(`https://wa.me/${phone}?text=${encodedMessage}`);
 
   //(option-2): Send via Twilio SMS API
-  const res = await sendSMS(BUSINESS_PHONE, receipt);
-  if (res) {
-    console.log("SMS sent successfully!", receipt);
+  // const res = await sendSMS(BUSINESS_PHONE, receipt);
+  // if (res) {
+  //   console.log("SMS sent successfully!", receipt);
+  //   cookieStore.delete("order_draft"); //Delete the cookie
+  //   return NextResponse.json({}, { status: 200 });
+  // } else {
+  //   console.error("Failed to send SMS. Falling back on Email");
+  //   return NextResponse.json({ error: "Failed to sent sms" }, { status: 500 });
+  // }
+
+  //(option-3): Send via SendGrid Email
+  try {
+    await sendOrderEmail(receipt);
     cookieStore.delete("order_draft"); //Delete the cookie
     return NextResponse.json({}, { status: 200 });
-  } else {
-    console.error("Failed to send SMS. Try again");
-    return NextResponse.json({}, { status: 500 });
+  } catch (err) {
+    console.error("Failed to send Email");
+    return NextResponse.json(
+      { error: "Failed to sent Email" },
+      { status: 500 }
+    );
   }
 }
