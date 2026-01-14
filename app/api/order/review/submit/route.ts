@@ -1,6 +1,7 @@
-//app/order/review/action.ts
-"use server";
-import { redirect } from "next/navigation";
+//app/api/order/review/submit/route.ts
+
+//import { redirect } from "next/navigation";
+import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { OrderDraftType } from "@/app/_models/order";
 import { MENU } from "@/app/_menuConfig/menu";
@@ -8,13 +9,15 @@ import { sendSMS } from "@/app/_lib/twilio";
 
 const BUSINESS_PHONE = "+19294537790";
 
-export default async function reviewOrder() {
+export async function POST(req: Request) {
   const cookieStore = await cookies();
   const cookie = cookieStore.get("order_draft");
-  if (!cookie) redirect("/order/review");
+  if (!cookie) return NextResponse.json({}, { status: 403 });
 
   const orderDraft: OrderDraftType = JSON.parse(cookie.value);
-  if (!orderDraft.menuItems.length) redirect("/order/review");
+  if (!orderDraft.menuItems.length) {
+    return NextResponse.json({}, { status: 403 });
+  }
 
   const { name, phone, deliveryOption, address, notes } = orderDraft.userInfos;
   const isDelivery = deliveryOption === "delivery";
@@ -65,9 +68,9 @@ export default async function reviewOrder() {
   if (res) {
     console.log("SMS sent successfully!");
     cookieStore.delete("order_draft"); //Delete the cookie
-    redirect("/order/confirm"); //can't use useRouter here bc it's client
+    return NextResponse.json({}, { status: 200 });
   } else {
     console.error("Failed to send SMS. Try again");
-    redirect("/order/review");
+    return NextResponse.json({}, { status: 500 });
   }
 }

@@ -1,6 +1,6 @@
 //app/order/page.tsx
 import { cookies } from "next/headers";
-import OrderForm2 from "../_components/OrderForm";
+import OrderForm2 from "../_components/OrderForm2";
 import { OrderDraftType } from "../_models/order";
 import PageTransition from "../_components/ui/PageTransition";
 

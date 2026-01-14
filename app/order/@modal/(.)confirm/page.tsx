@@ -16,7 +16,7 @@ export default function ConfirmModal() {
         </p>
 
         <button
-          onClick={() => router.back()}
+          onClick={() => router.push("/")}
           className="w-full rounded-lg bg-black text-white py-2"
         >
           Close

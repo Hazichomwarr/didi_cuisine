@@ -4,10 +4,12 @@ import clsx from "clsx";
 
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: "primary" | "secondary" | "tertiary";
+  type?: "submit" | "button";
 };
 
 export default function Button({
   variant = "primary",
+  type,
   className,
   ...props
 }: ButtonProps) {
@@ -19,6 +21,7 @@ export default function Button({
         variant === "tertiary" && "bg-green-600 text-white hover:bg-green-500",
         className
       )}
+      type={type ?? "button"}
       {...props}
     />
   );

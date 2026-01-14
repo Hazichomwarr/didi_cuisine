@@ -2,8 +2,8 @@
 
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import { MenuKEY, UserInfoSanitized } from "@/app/_models/order";
-import { orderTotalPrice } from "@/app/_utils/formConfig";
+import { MenuKEY, UserInfoSanitized } from "../../../_models/order";
+import { orderTotalPrice } from "../../../_utils/formConfig";
 import {
   parsePhoneNumberFromString,
   isValidPhoneNumber,
