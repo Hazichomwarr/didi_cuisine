@@ -76,6 +76,7 @@ export async function POST() {
   //(option-3): Send via SendGrid Email
   try {
     await sendOrderEmail(receipt);
+    console.log("Email sent successfully!", receipt);
     cookieStore.delete("order_draft"); //Delete the cookie
     return NextResponse.json({}, { status: 200 });
   } catch (err) {
