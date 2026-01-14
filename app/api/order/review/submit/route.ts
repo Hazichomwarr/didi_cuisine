@@ -57,8 +57,6 @@ export async function POST() {
   
   Thank you for your order 🙏`;
 
-  console.log("Receipt:", receipt);
-
   // (option-1): Send it via whatsAPP
   // const encodedMessage = encodeURIComponent(receipt);
   // redirect(`https://wa.me/${phone}?text=${encodedMessage}`);
@@ -66,7 +64,7 @@ export async function POST() {
   //(option-2): Send via Twilio SMS API
   const res = await sendSMS(BUSINESS_PHONE, receipt);
   if (res) {
-    console.log("SMS sent successfully!");
+    console.log("SMS sent successfully!", receipt);
     cookieStore.delete("order_draft"); //Delete the cookie
     return NextResponse.json({}, { status: 200 });
   } else {
