@@ -13,10 +13,18 @@ export default function HomePage() {
           {/* Background Image */}
           <Image
             src="/foodImages/gnoo.jpeg"
-            alt="Wifey Kitchen signature dishes"
+            alt="Didi-Cuisine signature dishes"
             fill
             priority
             className="object-cover opacity-40"
+          />
+          {/* RESTO LOGO */}
+          <Image
+            src="/foodImages/didiLogo.png"
+            alt="Didi's Cuisine logo"
+            width={180}
+            height={50}
+            className="mx-auto object-fit rounded-lg opacity-63 relative z-50"
           />
           {/* Overlay */}
           <div className="absolute inset-0 bg-linear-to-b from-black/70 via-black/50 to-black/80" />
@@ -33,9 +41,9 @@ export default function HomePage() {
             </h1>
 
             <p className="mx-auto mt-6 max-w-2xl text-lg text-neutral-300">
-              At <span className="font-bold italic text-teal-300">DIDI's</span>,
-              every dish is seasoned for days, grilled to perfection, and cooked
-              the way family deserves.
+              At <span className="font-bold italic text-amber-300">DIDI’s</span>
+              , every dish is seasoned for days, grilled to perfection, and
+              cooked the way family deserves.
             </p>
 
             <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
@@ -121,10 +129,11 @@ export default function HomePage() {
             </Link>
           </div>
         </section>
-        <footer className="mt-2 p-2 text-end text-xs text-stone-200 border border-amber-300">
-          Created&Designed By{" "}
-          <span className="text-yellow-400">Hamza Mare</span>. &copy; 2026 All
-          rights reserved.
+
+        <footer className="mt-10 pb-2 text-center text-xs text-neutral-400">
+          Created & designed by{" "}
+          <span className="text-amber-400 font-semibold">Hamza Mare</span> ©
+          2026
         </footer>
       </main>
     </PageTransition>
@@ -165,7 +174,15 @@ function Dish({
   return (
     <div className="rounded-2xl border border-neutral-800 bg-neutral-900 p-8 flex flex-col items-center justify-between">
       <h4 className="text-xl font-semibold">{label}</h4>
-      <img src={imgScr} alt={label} className="rounded-lg p-2 w-cover" />
+      {/* <img src={imgScr} alt={label} className="rounded-lg p-2 w-cover" /> */}
+      <Image
+        src={imgScr}
+        alt={label}
+        width={260}
+        height={180}
+        className="rounded-lg object-cover"
+      />
+
       <p className="mt-2 text-neutral-400">{note}</p>
     </div>
   );
