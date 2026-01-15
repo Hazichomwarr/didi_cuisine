@@ -49,7 +49,7 @@ export default function MenuItem({ item, label, price, defaultQty }: Props) {
           type="button"
           onClick={() => setNumSelected((prev) => prev + 1)}
         >
-          {/* <span>Add</span> */}
+          {numSelected === 0 && <span className="mr-2">Add</span>}
           <PlusCircle />
         </Button>
       </div>
