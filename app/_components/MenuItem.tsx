@@ -46,11 +46,10 @@ export default function MenuItem({ item, label, price, defaultQty }: Props) {
         )}
         <Button
           variant="secondary"
-          className="flex gap-1"
           type="button"
           onClick={() => setNumSelected((prev) => prev + 1)}
         >
-          <span>Add</span>
+          {/* <span>Add</span> */}
           <PlusCircle />
         </Button>
       </div>

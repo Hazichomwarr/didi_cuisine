@@ -56,7 +56,6 @@ export default function OrderForm({ initialState }: Props) {
             name="name"
             defaultValue={values.userInfos.name}
             placeholder="Enter your Name"
-            className="ui-input focus:ui-input-focus"
             inputError={errors.name}
             error={Boolean(errors.name)}
             required
@@ -98,7 +97,7 @@ export default function OrderForm({ initialState }: Props) {
         </div>
 
         {/* Delivery Option */}
-        <div className="flex flex-col items-start gap-2 border p-2 rounded-md border-gray-300">
+        <div className="flex flex-col items-start gap-2 border p-2 rounded-md border-gray-300 overflow-hidden">
           <h3 className="text-center mb-4 text-2xl text-gray-800">
             Delivery Options
           </h3>
@@ -125,8 +124,8 @@ export default function OrderForm({ initialState }: Props) {
               type="text"
               name="address"
               defaultValue={values.userInfos.address}
-              placeholder="Enter Delivery Address.."
-              className="ui-input focus:ui-input-focus"
+              placeholder="Delivery Address here..."
+              className="ui-input focus:ui-input-focus w-[140%] text-sm"
               inputError={errors.address}
               error={Boolean(errors.address)}
             />
@@ -134,7 +133,7 @@ export default function OrderForm({ initialState }: Props) {
         </div>
 
         <div className="text-2xl text-gray-800">
-          Special instructions or notes ? (optional)
+          Special instructions/notes? (optional)
         </div>
         <textarea
           name="notes"
