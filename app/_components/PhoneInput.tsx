@@ -17,35 +17,15 @@ export default function PhoneInput({ defaultValue, inputError, error }: Props) {
     formatPhone(defaultValue.substring(2))
   );
   return (
-    // <div className="grid grid-cols-[max-content_1fr] items-center">
-    //   <span className="mr-2">+1</span>
-    //   <Input
-    //     type="tel"
-    //     name="phone"
-    //     placeholder="US Phone: 000-000-0000"
-    //     className="ui-input focus:ui-input-focus flex-1"
-    //     inputError={inputError}
-    //     error={error}
-    //     onChange={(e) => setPhoneValue(formatPhone(e.target.value))}
-    //     value={phoneValue}
-    //     required
-    //   />
-    // </div>
-
-    // <div className="grid grid-cols-[max-content_1fr] items-center w-full rounded-md border border-gray-300 px-3 focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 transition-all">
-    <div className="w-full grid grid-cols-[max-content_1fr] items-center ui-input focus-within:ring-2 focus-within:ring-blue-800">
-      {/* The Prefix */}
+    <div className="grid grid-cols-[max-content_1fr] items-center">
       <span className="text-gray-500 pr-2 border-r border-gray-200 mr-2 select-none">
         +1
       </span>
-
-      {/* The Actual Input */}
       <Input
         type="tel"
         name="phone"
         placeholder="Phone: 000-000-0000"
-        /* Remove the border/ring from the Input component itself */
-        className="border-none focus:ring-0 p-0 outline-none flex-1"
+        className="ui-input focus:ui-input-focus flex-1"
         inputError={inputError}
         error={error}
         onChange={(e) => setPhoneValue(formatPhone(e.target.value))}
@@ -53,5 +33,26 @@ export default function PhoneInput({ defaultValue, inputError, error }: Props) {
         required
       />
     </div>
+
+    // <div className="w-full grid grid-cols-[max-content_1fr] items-center ui-input focus-within:ring-2 focus-within:ring-blue-800">
+    //   {/* The Prefix */}
+    //   <span className="text-gray-500 pr-2 border-r border-gray-200 mr-2 select-none">
+    //     +1
+    //   </span>
+
+    //   {/* The Actual Input */}
+    //   <Input
+    //     type="tel"
+    //     name="phone"
+    //     placeholder="Phone: 000-000-0000"
+    //     /* Remove the border/ring from the Input component itself */
+    //     className="border-none focus:ring-0 p-0 outline-none flex-1"
+    //     inputError={inputError}
+    //     error={error}
+    //     onChange={(e) => setPhoneValue(formatPhone(e.target.value))}
+    //     value={phoneValue}
+    //     required
+    //   />
+    // </div>
   );
 }
