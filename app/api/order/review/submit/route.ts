@@ -7,6 +7,7 @@ import { OrderDraftType } from "@/app/_models/order";
 import { MENU } from "@/app/_menuConfig/menu";
 import { sendSMS } from "@/app/_lib/twilio";
 import { sendOrderEmail } from "@/app/_lib/email";
+import { prisma } from "@/app/_lib/prisma";
 
 const BUSINESS_PHONE = "+19294537790";
 
@@ -29,8 +30,34 @@ export async function POST() {
     els.push(`- ${MENU[item.productId].label} x${item.quantity}`);
   }
 
+  //persit order to DB
+  const order = await prisma.order.create({
+    data: {
+      customerName: name,
+      customerPhone: phone,
+      deliveryOption,
+      address: isDelivery ? address : null,
+      notes,
+      total: isDelivery ? orderDraft.total + 5 : orderDraft.total,
+      status: "PENDING",
+      items: {
+        create: orderDraft.menuItems.map((item) => ({
+          productId: item.productId,
+          label: MENU[item.productId].label,
+          price: MENU[item.productId].price,
+          quantity: item.quantity,
+        })),
+      },
+    },
+  });
+
+  // const fullOrder = await prisma.order.findUnique({
+  //   where: {id: order.id},
+  //   include: {items: true}
+  // })
+
   //Order-ID timestamp & ETA
-  const orderId = `DK-${Date.now().toString().slice(-6)}`;
+  const orderId = order.id;
   const timestamp = new Date().toLocaleString("en-US", {
     dateStyle: "medium",
     timeStyle: "short",
