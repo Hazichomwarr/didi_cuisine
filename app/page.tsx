@@ -93,21 +93,27 @@ export default function HomePage() {
           </p>
 
           <div className="mt-16 grid gap-10 sm:grid-cols-3">
-            <Dish
-              id={MENU.dibi.id}
-              label={MENU.dibi.label}
-              note="48-hour seasoned • Smoky & tender"
-            />
-            <Dish
-              id={MENU.chicken.id}
-              label={MENU.chicken.label}
-              note="Juicy • Deeply marinated"
-            />
-            <Dish
-              id={MENU["jollof-rice"].id}
-              label={MENU["jollof-rice"].label}
-              note="Rich • Comforting • Legendary"
-            />
+            <a href="/order" className="hover:cursor-pointer">
+              <Dish
+                id={MENU.dibi.id}
+                label={MENU.dibi.label}
+                note="48-hour seasoned • Smoky & tender"
+              />
+            </a>
+            <a href="/order" className="hover:cursor-pointer">
+              <Dish
+                id={MENU.chicken.id}
+                label={MENU.chicken.label}
+                note="Juicy • Deeply marinated"
+              />
+            </a>
+            <a href="/order" className="hover:cursor-pointer">
+              <Dish
+                id={MENU["jollof-rice"].id}
+                label={MENU["jollof-rice"].label}
+                note="Rich • Comforting • Legendary"
+              />
+            </a>
           </div>
         </section>
 
