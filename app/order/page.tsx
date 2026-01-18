@@ -38,7 +38,7 @@ export default async function OrderPage() {
   return (
     <PageTransition>
       <div className="relative space-y-6 flex flex-col items-center p-6 mx-auto my-2 ">
-        <div className="absolute inset-0" />
+        {/* <div className="absolute inset-0" /> */}
         <div
           className="relative z-10 w-full flex flex-col items-center space-y-6 bg-cover"
           style={{
