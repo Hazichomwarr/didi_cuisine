@@ -14,18 +14,17 @@ interface Props {
 
 export default function PhoneInput({ defaultValue, inputError, error }: Props) {
   const [phoneValue, setPhoneValue] = useState<string>(
-    formatPhone(defaultValue.substring(2))
+    formatPhone(defaultValue.substring(2)),
   );
   return (
-    <div className="grid grid-cols-[max-content_1fr] items-center">
-      <span className="text-gray-500 pr-2 border-r border-gray-200 mr-2 select-none">
+    <div className="grid grid-cols-[max-content_1fr] ui-input focus:ui-input-focus">
+      <span className="text-gray-400 pr-2 border-r mt-1 border-gray-300 mr-2 select-none h-9">
         +1
       </span>
       <Input
         type="tel"
         name="phone"
         placeholder="Phone: 000-000-0000"
-        className="ui-input focus:ui-input-focus flex-1"
         inputError={inputError}
         error={error}
         onChange={(e) => setPhoneValue(formatPhone(e.target.value))}

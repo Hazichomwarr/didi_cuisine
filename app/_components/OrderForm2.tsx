@@ -48,7 +48,7 @@ export default function OrderForm({ initialState }: Props) {
       onSubmit={handleSubmit}
       className="w-full max-w-2xl mx-auto space-y-6 p-6 rounded-2xl shadow-xl bg-white"
     >
-      <div className="w-full bg-gray-50 rounded-xl p-4 space-y-3">
+      <div className="w-full bg-neutral-400 text-gray-100 rounded-xl p-4 space-y-3">
         {/* Name + Phone Number */}
         <div className="grid grid-rows-2 items-start gap-3 p-2 border rounded-md border-gray-300">
           <Input
@@ -73,7 +73,7 @@ export default function OrderForm({ initialState }: Props) {
             Boolean(errors.menuItems) && "border-red-800"
           }`}
         >
-          <h3 className="text-center mb-4 text-2xl text-gray-800">
+          <h3 className="text-center mb-4 text-2xl text-black">
             Select dishes
           </h3>
           {MenuKeys.map((key) => {
@@ -138,10 +138,10 @@ export default function OrderForm({ initialState }: Props) {
         <textarea
           name="notes"
           defaultValue={values.userInfos.notes}
-          placeholder="Any special Instructions or food notes here..."
+          placeholder="Instructions or food notes here..."
           rows={4}
           cols={24}
-          className="w-full border border-gray-300 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-green-600"
+          className="w-full border border-gray-300 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-green-600 "
         ></textarea>
 
         <div className="flex flex-col items-center gap-2 w-full">

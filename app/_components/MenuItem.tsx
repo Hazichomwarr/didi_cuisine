@@ -21,7 +21,7 @@ export default function MenuItem({ item, label, price, defaultQty }: Props) {
   }
 
   return (
-    <div className="w-full grid grid-cols-3 mb-3 items-center border-b border-gray-300 p-2">
+    <div className="w-full grid grid-cols-3 mb-3 items-center border-b border-gray-300 p-2 overflow-x-hidden">
       <label htmlFor={item} className="flex flex-col md:col-span-2">
         {label}
         <span className="flex items-center">
@@ -29,7 +29,7 @@ export default function MenuItem({ item, label, price, defaultQty }: Props) {
           {price}
         </span>
       </label>
-      <div className="flex gap-2 items-center">
+      <div className="flex items-center justify-between">
         <input
           type="hidden"
           name={`items[${item}]`}
