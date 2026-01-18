@@ -5,11 +5,9 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { OrderDraftType } from "@/app/_models/order";
 import { MENU } from "@/app/_menuConfig/menu";
-import { sendSMS } from "@/app/_lib/twilio";
+// import { sendSMS } from "@/app/_lib/twilio";
 import { sendOrderEmail } from "@/app/_lib/email";
 import { prisma } from "@/app/_lib/prisma";
-
-const BUSINESS_PHONE = "+19294537790";
 
 export async function POST() {
   const cookieStore = await cookies();

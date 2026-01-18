@@ -36,7 +36,7 @@ export default function MenuItem({ item, label, price, defaultQty }: Props) {
           id={item}
           value={`${numSelected}`}
         />
-        <span className="text-3xl text-amber-600 font-bold">
+        <span className="text-3xl font-semibold">
           {numSelected >= 1 ? numSelected : 0}
         </span>
         {numSelected >= 1 && (

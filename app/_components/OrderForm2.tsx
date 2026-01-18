@@ -46,7 +46,7 @@ export default function OrderForm({ initialState }: Props) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="w-full max-w-2xl mx-auto space-y-6 p-6 rounded-2xl shadow-xl bg-white"
+      className="w-full max-w-2xl mx-auto space-y-6 p-6 rounded-2xl shadow-xl bg-gray-300"
     >
       {/* <div className="w-full bg-neutral-400 text-gray-100 rounded-xl p-4 space-y-3"> */}
       {/* Name + Phone Number */}
@@ -69,7 +69,7 @@ export default function OrderForm({ initialState }: Props) {
 
       {/* MENU ITEMS */}
       <div
-        className={`flex flex-col items-start gap-2 border p-2 rounded-md border-gray-300 ${
+        className={`flex flex-col items-start gap-2 border p-2 rounded-md border-gray-100 ${
           Boolean(errors.menuItems) && "border-red-800"
         }`}
       >
@@ -92,7 +92,7 @@ export default function OrderForm({ initialState }: Props) {
       </div>
 
       {/* Delivery Option */}
-      <div className="flex flex-col items-start gap-2 border p-2 rounded-md border-gray-300 overflow-hidden">
+      <div className="flex flex-col items-start gap-2 border p-2 rounded-md border-gray-100 overflow-hidden">
         <h3 className="text-center mb-4 text-2xl text-gray-800">
           Delivery Options
         </h3>
@@ -133,10 +133,10 @@ export default function OrderForm({ initialState }: Props) {
       <textarea
         name="notes"
         defaultValue={values.userInfos.notes}
-        placeholder="Instructions or food notes here..."
+        placeholder="Instructions or food notes..."
         rows={4}
         cols={24}
-        className="w-full border border-gray-300 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-green-600 "
+        className="w-full bg-gray-100 border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-green-600"
       ></textarea>
 
       <div className="flex flex-col items-center gap-2 w-full">
@@ -145,7 +145,7 @@ export default function OrderForm({ initialState }: Props) {
         </Button>
         <Link
           href="/"
-          className="w-full text-center py-3 rounded-xl border border-gray-300 text-gray-700 hover:bg-gray-100 active:scale-95"
+          className="w-full text-center py-3 rounded-xl border border-gray-100 text-gray-700 hover:bg-gray-100 active:scale-95"
         >
           Cancel
         </Link>
