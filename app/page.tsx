@@ -93,27 +93,23 @@ export default function HomePage() {
           </p>
 
           <div className="mt-16 grid gap-10 sm:grid-cols-3">
-            <a href="/order" className="hover:cursor-pointer">
-              <Dish
-                id={MENU.dibi.id}
-                label={MENU.dibi.label}
-                note="48-hour seasoned • Smoky & tender"
-              />
-            </a>
-            <a href="/order" className="hover:cursor-pointer">
-              <Dish
-                id={MENU.chicken.id}
-                label={MENU.chicken.label}
-                note="Juicy • Deeply marinated"
-              />
-            </a>
-            <a href="/order" className="hover:cursor-pointer">
-              <Dish
-                id={MENU["jollof-rice"].id}
-                label={MENU["jollof-rice"].label}
-                note="Rich • Comforting • Legendary"
-              />
-            </a>
+            <Dish
+              id={MENU.dibi.id}
+              label={MENU.dibi.label}
+              note="48-hour seasoned • Smoky & tender"
+            />
+
+            <Dish
+              id={MENU.chicken.id}
+              label={MENU.chicken.label}
+              note="Juicy • Deeply marinated"
+            />
+
+            <Dish
+              id={MENU["jollof-rice"].id}
+              label={MENU["jollof-rice"].label}
+              note="Rich • Comforting • Legendary"
+            />
           </div>
         </section>
 
@@ -180,14 +176,15 @@ function Dish({
   return (
     <div className="rounded-2xl border border-neutral-800 bg-neutral-900 p-8 flex flex-col items-center justify-between">
       <h4 className="text-xl font-semibold">{label}</h4>
-      {/* <img src={imgScr} alt={label} className="rounded-lg p-2 w-cover" /> */}
-      <Image
-        src={imgScr}
-        alt={label}
-        width={260}
-        height={180}
-        className="rounded-lg object-cover"
-      />
+      <a href="/order" className="hover:cursor-pointer">
+        <Image
+          src={imgScr}
+          alt={label}
+          width={260}
+          height={180}
+          className="rounded-lg object-cover"
+        />
+      </a>
 
       <p className="mt-2 text-neutral-400">{note}</p>
     </div>
