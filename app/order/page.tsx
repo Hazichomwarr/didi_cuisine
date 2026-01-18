@@ -42,7 +42,7 @@ export default async function OrderPage() {
         <div
           className="relative z-10 w-full flex flex-col items-center space-y-6 bg-cover"
           style={{
-            backgroundImage: "url(/foodImages/chickenAvocado.jpeg)",
+            backgroundImage: "url(/foodImages/didiLogo.png)",
           }}
         >
           <h3 className="text-3xl font-semibold text-black">{headerString}</h3>
