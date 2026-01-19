@@ -21,7 +21,7 @@ export default function MenuItem({ item, label, price, defaultQty }: Props) {
   }
 
   return (
-    <div className="w-full grid grid-cols-3 mb-3 items-center border-b border-gray-300 p-2">
+    <div className="w-full grid grid-cols-3 mb-3 items-center border-b-4 border-white pb-2">
       <label htmlFor={item} className="flex flex-col md:col-span-2">
         {label}
         <span className="flex items-center">

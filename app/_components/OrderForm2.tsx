@@ -46,11 +46,11 @@ export default function OrderForm({ initialState }: Props) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="w-full max-w-2xl mx-auto space-y-6 p-6 rounded-2xl shadow-xl bg-gray-300"
+      className="w-full max-w-2xl mx-auto space-y-6 p-6 rounded-2xl shadow-xl bg-gray-100"
     >
       {/* <div className="w-full bg-neutral-400 text-gray-100 rounded-xl p-4 space-y-3"> */}
       {/* Name + Phone Number */}
-      <div className="grid grid-rows-2 items-start gap-3 p-2 border rounded-md border-gray-300">
+      <div className="grid grid-rows-2 items-start gap-3 p-2 rounded-md">
         <Input
           type="text"
           name="name"
@@ -73,11 +73,11 @@ export default function OrderForm({ initialState }: Props) {
           Boolean(errors.menuItems) && "border-red-800"
         }`}
       >
-        <h3 className="text-center mb-4 text-2xl text-black">Select dishes</h3>
+        <h3 className="mb-4 text-2xl text-black">Select dishes</h3>
         {MenuKeys.map((key) => {
           const { id, label, price } = MENU[key] as MenuItemType;
           return (
-            <MenuItem
+              <MenuItem
               key={id}
               item={id}
               label={label}
@@ -92,7 +92,7 @@ export default function OrderForm({ initialState }: Props) {
       </div>
 
       {/* Delivery Option */}
-      <div className="flex flex-col items-start gap-2 border p-2 rounded-md border-gray-100 overflow-hidden">
+      <div className="flex flex-col items-start gap-2 border-4 border-white p-2 rounded-md overflow-scroll">
         <h3 className="text-center mb-4 text-2xl text-gray-800">
           Delivery Options
         </h3>
@@ -145,7 +145,7 @@ export default function OrderForm({ initialState }: Props) {
         </Button>
         <Link
           href="/"
-          className="w-full text-center py-3 rounded-xl border border-gray-100 text-gray-700 hover:bg-gray-100 active:scale-95"
+          className="w-full text-center py-3 rounded-xl border-4 border-white shadow-lg text-gray-700 bg-gray-200 hover:bg-gray-300 active:scale-95"
         >
           Cancel
         </Link>
