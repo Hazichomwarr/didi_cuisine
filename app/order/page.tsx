@@ -12,18 +12,17 @@ export type InitialStateType = {
 
 export default async function OrderPage({searchParams}: {
   searchParams: {
-    add?: string;
+    add?: MenuKEY;
   }}) {
   const cookieStore = await cookies();
   const cookie = cookieStore.get("order_draft");
 
   //get query from url if any
   const query = await searchParams;
-  const selectedItem =
-  query?.add && MENU[query.add as MenuKEY]
-    ? [{ productId: query.add, quantity: 1 }]
-    : [];
-
+  // const selectedItem =
+  // query?.add && MENU[query.add as MenuKEY]
+  //   ? [{ productId: query.add, quantity: 1 }]
+  //   : [];
 
   const initialState: InitialStateType = cookie
     ? {
@@ -40,7 +39,7 @@ export default async function OrderPage({searchParams}: {
             address: "",
             notes: "",
           },
-          menuItems: selectedItem,
+          menuItems: query ? [{ productId: query.add, quantity: 1 }] : [],
           total: 0,
         },
       };
