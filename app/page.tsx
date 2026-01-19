@@ -56,7 +56,7 @@ export default function HomePage() {
 
               <Link
                 href="#menu"
-                className="rounded-full border border-neutral-600 px-8 py-3 text-neutral-200 transition hover:border-neutral-400"
+                className="rounded-full border border-neutral-600 px-8 py-3 text-neutral-200 transition hover:border-neutral-400 scroll-smooth"
               >
                 View Menu
               </Link>
@@ -164,7 +164,7 @@ function Dish({
   label,
   note,
 }: {
-  id?: string;
+  id: string;
   label: string;
   note: string;
 }) {
@@ -176,7 +176,7 @@ function Dish({
   return (
     <div className="rounded-2xl border border-neutral-800 bg-neutral-900 p-8 flex flex-col items-center justify-between">
       <h4 className="text-xl font-semibold">{label}</h4>
-      <a href="/order" className="hover:cursor-pointer">
+      <Link href={`/order?add=${id}`} className="hover:cursor-pointer">
         <Image
           src={imgScr}
           alt={label}
@@ -184,7 +184,7 @@ function Dish({
           height={180}
           className="rounded-lg object-cover"
         />
-      </a>
+      </Link>
 
       <p className="mt-2 text-neutral-400">{note}</p>
     </div>

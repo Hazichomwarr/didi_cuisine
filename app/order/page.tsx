@@ -9,9 +9,13 @@ export type InitialStateType = {
   values: Omit<OrderDraftType, "createdAt">;
 };
 
-export default async function OrderPage() {
+export default async function OrderPage({searchParams}) {
   const cookieStore = await cookies();
   const cookie = cookieStore.get("order_draft");
+
+  //get query from url if any
+  const query = await searchParams;
+  console.log("query-object:", query)
 
   const initialState: InitialStateType = cookie
     ? {
@@ -28,7 +32,7 @@ export default async function OrderPage() {
             address: "",
             notes: "",
           },
-          menuItems: [],
+          menuItems: query ? [{productId: query.add, quantity: 1}] : [],
           total: 0,
         },
       };

@@ -20,6 +20,7 @@ export default function OrderForm({ initialState }: Props) {
   const [errors, setErrors] = useState(initialState.errors);
 
   const values = initialState.values;
+  console.log("initial state:", values)
   const MenuKeys = Object.keys(MENU) as MenuKEY[];
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
