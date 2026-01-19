@@ -18,9 +18,12 @@ export default async function OrderPage({searchParams}: {
   const cookie = cookieStore.get("order_draft");
   //get query from url if any
   const query = await searchParams;
-  if (query) {
-    const sanitizedQuery:MenuKEY = query.add;
-  }
+  const sanitizedQuery: MenuKEY | null = typeof query.add === 'string'
+    ? MENU[query.add].id as MenuKEY
+    : null
+  
+  console.log('sanitizedQuery:', sanitizedQuery)
+  console.log("id:",MENU[query.add].id)
   // const selectedItem =
   // query?.add && MENU[query.add as MenuKEY]
   //   ? [{ productId: query.add a, quantity: 1 }]
@@ -41,7 +44,8 @@ export default async function OrderPage({searchParams}: {
             address: "",
             notes: "",
           },
-          menuItems: query ? [{ productId: query!.add as MenuKEY, quantity: 1 }] : [],
+          menuItems: sanitizedQuery ? [{ productId: sanitizedQuery, quantity: 1 }] : [],
+
           total: 0,
         },
       };

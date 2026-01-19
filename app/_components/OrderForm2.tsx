@@ -70,7 +70,7 @@ export default function OrderForm({ initialState }: Props) {
 
       {/* MENU ITEMS */}
       <div
-        className={`flex flex-col items-start gap-2 border p-2 rounded-md border-gray-100 ${
+        className={`flex flex-col items-start gap-2 border-4 border-white p-2 rounded-md ${
           Boolean(errors.menuItems) && "border-red-800"
         }`}
       >
@@ -121,7 +121,7 @@ export default function OrderForm({ initialState }: Props) {
             name="address"
             defaultValue={values.userInfos.address}
             placeholder="Delivery Address here..."
-            className="ui-input focus:ui-input-focus w-[140%] text-sm"
+            className="ui-input focus:ui-input-focus w-full text-sm"
             inputError={errors.address}
             error={Boolean(errors.address)}
           />

@@ -65,8 +65,7 @@ export async function POST(req: Request) {
     userInfos.deliveryOption === "delivery" &&
     !ADDRESS_REGEX.test(userInfos.address)
   ) {
-    missingInputs.address =
-      'Valid Address is required for delivery. (Ex: "123 Main street, City, State")';
+    missingInputs.address = 'Valid Address is required for delivery.\n(Ex: "123 Main street, City, State")';
   }
 
   if (Object.keys(missingInputs).length > 0) {

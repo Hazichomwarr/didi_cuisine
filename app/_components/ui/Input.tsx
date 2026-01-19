@@ -17,7 +17,7 @@ export function Input({ inputError, error, className, ...props }: InputProps) {
       )}
       {...props}
     />
-    {inputError && <p className="text-red-600 ml-2">{inputError}</p>}
+    {inputError && <div className="text-red-600 ml-2 whitespace-pre-line">{inputError}</div>}
     </div>
   );
 }
