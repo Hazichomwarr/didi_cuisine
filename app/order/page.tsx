@@ -1,8 +1,9 @@
 //app/order/page.tsx
 import { cookies } from "next/headers";
 import OrderForm2 from "../_components/OrderForm2";
-import { OrderDraftType } from "../_models/order";
+import { OrderDraftType, MenuKEY } from "../_models/order";
 import PageTransition from "../_components/ui/PageTransition";
+import { MENU } from "../_menuConfig/menu"
 
 export type InitialStateType = {
   errors: Record<string, string>;
@@ -18,7 +19,11 @@ export default async function OrderPage({searchParams}: {
 
   //get query from url if any
   const query = await searchParams;
-  console.log("query-object:", query)
+  const selectedItem =
+  query?.add && MENU[query.add as MenuKEY]
+    ? [{ productId: query.add, quantity: 1 }]
+    : [];
+
 
   const initialState: InitialStateType = cookie
     ? {
@@ -35,7 +40,7 @@ export default async function OrderPage({searchParams}: {
             address: "",
             notes: "",
           },
-          menuItems: query ? [{productId: query.add, quantity: 1}] : [],
+          menuItems: selectedItem,
           total: 0,
         },
       };
