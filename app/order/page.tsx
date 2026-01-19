@@ -12,18 +12,16 @@ export type InitialStateType = {
 
 export default async function OrderPage({searchParams}: {
   searchParams: {
-    add?: string;
+    add?: MenuKEY;
   }}) {
   const cookieStore = await cookies();
   const cookie = cookieStore.get("order_draft");
   //get query from url if any
   const query = await searchParams;
-  const sanitizedQuery: MenuKEY | null = typeof query.add === 'string'
-    ? MENU[query.add].id as MenuKEY
+  const sanitizedQuery: MenuKEY | null = typeof query.add !== undefined
+    ? MENU[query.add].id
     : null
-  
-  console.log('sanitizedQuery:', sanitizedQuery)
-  console.log("id:",MENU[query.add].id)
+
   // const selectedItem =
   // query?.add && MENU[query.add as MenuKEY]
   //   ? [{ productId: query.add a, quantity: 1 }]
