@@ -16,11 +16,13 @@ export default async function OrderPage({searchParams}: {
   }}) {
   const cookieStore = await cookies();
   const cookie = cookieStore.get("order_draft");
+
   //get query from url if any
   const query = await searchParams;
-  const sanitizedQuery: MenuKEY | null = typeof query.add !== undefined
-    ? MENU[query.add].id
-    : null
+  const sanitizedQuery: MenuKEY | null =
+    query.add && query.add in MENU
+      ? query.add
+      : null;
 
   // const selectedItem =
   // query?.add && MENU[query.add as MenuKEY]
@@ -43,7 +45,6 @@ export default async function OrderPage({searchParams}: {
             notes: "",
           },
           menuItems: sanitizedQuery ? [{ productId: sanitizedQuery, quantity: 1 }] : [],
-
           total: 0,
         },
       };
