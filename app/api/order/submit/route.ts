@@ -3,6 +3,7 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { randomUUID } from "crypto";
+import {signDraft} from "@/app/_lib/draftSignature"
 
 import {
   parsePhoneNumberFromString,
@@ -23,10 +24,7 @@ type OrderErrors = {
 
 export async function POST(req: Request) {
   const formData = await req.json();
-  console.log("formData_raw:", formData);
-
-  //   const raw = Object.fromEntries(formData.entries());
-  //   console.log("raw:", raw);
+  //console.log("formData_raw:", formData);
 
   const menuItems = Object.entries(formData)
     .filter(([key]) => key.startsWith("items["))
@@ -47,10 +45,6 @@ export async function POST(req: Request) {
     address: formData.address?.trim(),
     notes: formData.notes?.trim(),
   };
-
-  // console.log("phone-number:", userInfos.phone);
-  // console.log("userInfos:", userInfos);
-  // console.log("items selected:", menuItems);
 
   //Error Array
   const missingInputs: OrderErrors = {};
@@ -89,11 +83,14 @@ export async function POST(req: Request) {
     total,
     createdAt: Date.now(),
   };
-  console.log("order-draft:", orderDraft);
+  // console.log("order-draft:", orderDraft);
 
-  //Persist draft
+  //signe draft first
+  const signedDraft = {data: orderDraft, sig: signDraft(orderDraft)}
+
+  //Then Persist draft to cookies
   const cookieStore = await cookies();
-  cookieStore.set("order_draft", JSON.stringify(orderDraft), {
+  cookieStore.set("order_draft", JSON.stringify(signedDraft), {
     httpOnly: true,
     path: "/",
     maxAge: 60 * 10, //10mins

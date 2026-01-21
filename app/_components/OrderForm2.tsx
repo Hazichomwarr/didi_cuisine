@@ -22,7 +22,6 @@ export default function OrderForm({ initialState }: Props) {
   const [loading, setLoading] = useState(false);
 
   const values = initialState.values;
-  console.log("initial state:", values);
   const MenuKeys = Object.keys(MENU) as MenuKEY[];
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -48,7 +47,7 @@ export default function OrderForm({ initialState }: Props) {
       setErrors(data.errors);
       return;
     }
-    //stop Loader before opening modal
+    //stop Loader before redirecting
     setLoading(false);
     router.push("order/review");
   }
@@ -79,7 +78,7 @@ export default function OrderForm({ initialState }: Props) {
 
       {/* MENU ITEMS */}
       <div
-        className={`flex flex-col items-start gap-2 border-4 border-white p-2 rounded-md ${
+        className={`flex flex-col items-start gap-2 border border-gray-300 p-2 rounded-md ${
           Boolean(errors.menuItems) && "border-red-800"
         }`}
       >
@@ -102,7 +101,7 @@ export default function OrderForm({ initialState }: Props) {
       </div>
 
       {/* Delivery Option */}
-      <div className="flex flex-col items-start gap-2 border-4 border-white p-2 rounded-md overflow-scroll">
+      <div className="flex flex-col items-start gap-2 border border-gray-300 p-2 rounded-md overflow-scroll">
         <h3 className="text-center mb-4 text-2xl text-gray-800">
           Delivery Options
         </h3>
@@ -161,7 +160,7 @@ export default function OrderForm({ initialState }: Props) {
         </Button>
         <Link
           href="/"
-          className="w-full text-center py-3 rounded-xl border-4 border-white shadow-lg text-gray-700 bg-gray-200 hover:bg-gray-300 active:scale-95"
+          className="w-full text-center py-3 rounded-xl border border-gray-400 shadow-lg text-gray-700 bg-gray-200 hover:bg-gray-300 active:scale-95"
         >
           Cancel
         </Link>

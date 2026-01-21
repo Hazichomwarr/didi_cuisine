@@ -3,10 +3,9 @@
 //import { redirect } from "next/navigation";
 // import { sendSMS } from "@/app/_lib/twilio";
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
-
-import { headers } from "next/headers";
+import { headers, cookies } from "next/headers";
 import { orderLimit } from "@/app/_lib/rateLimit";
+import {verifyDraft} from "@/app/_lib/draftSignature"
 
 import { OrderDraftType } from "@/app/_models/order";
 import { MENU } from "@/app/_menuConfig/menu";
@@ -15,6 +14,7 @@ import { sendOrderEmail } from "@/app/_lib/email";
 import { prisma } from "@/app/_lib/prisma";
 
 export async function POST() {
+
   //Ratelimiter (before cookie)
   const ip = (await headers()).get("x-forwarded-for") ?? "anonymous";
   const { success } = await orderLimit.limit(ip);
@@ -32,11 +32,20 @@ export async function POST() {
   }
   console.log(`csrf tookens match?: ${csrfToken === headerToken}`);
 
-  //Now get user Order from the other cookie
+  //Now get user Order from the signed cookie
   const cookie = cookieStore.get("order_draft");
   if (!cookie) return NextResponse.json({}, { status: 403 });
 
-  const orderDraft: OrderDraftType = JSON.parse(cookie.value);
+  const parsed = JSON.parse(cookie.value);
+  if (!parsed?.data || !parsed?.sig) {
+    return NextResponse.json({error: "Invalid draft"}, {status: 403})
+  }
+  if (!verifyDraft(parsed.data, parsed.sig)) {
+    return NextResponse.json({error: "Draft tampered"}, {status: 403})
+  }
+  console.log("order-draft and signedDraft values match!")
+
+  const orderDraft: OrderDraftType = parsed.data;
   if (!orderDraft.menuItems.length) {
     return NextResponse.json({}, { status: 403 });
   }

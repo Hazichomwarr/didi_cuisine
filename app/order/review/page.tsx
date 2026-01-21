@@ -1,6 +1,7 @@
 //order/review/page.tsx
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import {verifyDraft} from "@/app/_lib/draftSignature"
 
 import { OrderDraftType } from "@/app/_models/order";
 import OrderPriceDetails from "@/app/_components/OrderPriceDetails";
@@ -9,17 +10,29 @@ import PageTransition from "@/app/_components/ui/PageTransition";
 import SendOrderForm from "@/app/_components/SendOrderForm";
 
 export default async function ReviewPage() {
-  //Get OrderDraft from cookies
-  const cookieStore = await cookies();
-  const cookie = cookieStore.get("order_draft");
-  if (!cookie) redirect("/order");
 
-  const orderDraft: OrderDraftType = JSON.parse(cookie.value);
-  if (!orderDraft.menuItems.length) redirect("/order");
+  const cookieStore = await cookies();
 
   //Get csrfToken
   const csrfToken = cookieStore.get("csrf_token")?.value;
   if (!csrfToken) redirect("/order");
+
+  //Get OrderDraft from signed cookie
+  const cookie = cookieStore.get("order_draft");
+  if (!cookie) redirect("/order");
+
+  const parsed = JSON.parse(cookie.value);
+  if (!parsed?.data || !parsed?.sig) {
+    redirect("/order")
+  }
+  if (!verifyDraft(parsed.data, parsed.sig)) {
+    redirect("/order")
+  }
+
+  const orderDraft: OrderDraftType = parsed.data;
+  if (!orderDraft.menuItems.length) {
+    redirect("/order")
+  }
 
   return (
     <PageTransition>
