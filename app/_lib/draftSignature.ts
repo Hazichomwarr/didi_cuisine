@@ -1,6 +1,6 @@
 import crypto from "crypto"
 
-const SECRET = process.env.DRAFT_SIGNING_SECRET;
+const SECRET = process.env.DRAFT_SIGNING_SECRET!;
 
 export function signDraft(draft: unknown): string {
     return crypto.createHmac("sha256", SECRET).update(JSON.stringify(draft)).digest("hex")
