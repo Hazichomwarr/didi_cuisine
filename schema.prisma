@@ -17,7 +17,7 @@ enum OrderStatus {
 model Order {
   id             String      @id @default(cuid())
   customerName   String
-  customerPhone  String
+  customerPhone  String       @db.VarChar(20)
   deliveryOption String
   address        String?
   notes          String?
@@ -26,15 +26,18 @@ model Order {
   createdAt      DateTime    @default(now())
 
   items          OrderItem[]
+
+  @@index([createdAt])
+  @@index([status])
 }
 
 model OrderItem {
   id        String   @id @default(cuid())
-  orderId   String
   productId String
   label     String
   price     Float
   quantity  Int
 
   order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderId   String
 }

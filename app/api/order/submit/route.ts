@@ -2,12 +2,15 @@
 
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import { MenuKEY, UserInfoSanitized } from "../../../_models/order";
-import { orderTotalPrice } from "../../../_utils/formConfig";
+import { randomUUID } from "crypto";
+
 import {
   parsePhoneNumberFromString,
   isValidPhoneNumber,
 } from "libphonenumber-js";
+
+import { MenuKEY, UserInfoSanitized } from "../../../_models/order";
+import { orderTotalPrice } from "../../../_utils/formConfig";
 import { MENU } from "@/app/_menuConfig/menu";
 
 type OrderErrors = {
@@ -38,7 +41,7 @@ export async function POST(req: Request) {
     name: formData.name?.trim(),
     phone:
       parsePhoneNumberFromString(formData.phone?.trim(), "US")?.format(
-        "E.164"
+        "E.164",
       ) ?? "",
     deliveryOption: formData.deliveryOption?.trim(),
     address: formData.address?.trim(),
@@ -65,7 +68,8 @@ export async function POST(req: Request) {
     userInfos.deliveryOption === "delivery" &&
     !ADDRESS_REGEX.test(userInfos.address)
   ) {
-    missingInputs.address = 'Valid Address is required for delivery.\n(Ex: "123 Main street, City, State")';
+    missingInputs.address =
+      'Valid Address is required for delivery.\n(Ex: "123 Main street, City, State")';
   }
 
   if (Object.keys(missingInputs).length > 0) {
@@ -95,7 +99,16 @@ export async function POST(req: Request) {
     maxAge: 60 * 10, //10mins
   });
 
-  return NextResponse.json({ success: true });
+  //set csrf token
+  const csrfToken = randomUUID();
+  cookieStore.set("csrf_token", csrfToken, {
+    httpOnly: true,
+    sameSite: "strict",
+    secure: true,
+    path: "/",
+  });
+
+  return NextResponse.json({ csrfToken });
 }
 
 export async function OPTIONS() {

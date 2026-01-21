@@ -1,16 +1,38 @@
 //app/api/order/review/submit/route.ts
 
 //import { redirect } from "next/navigation";
+// import { sendSMS } from "@/app/_lib/twilio";
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
+
+import { headers } from "next/headers";
+import { orderLimit } from "@/app/_lib/rateLimit";
+
 import { OrderDraftType } from "@/app/_models/order";
 import { MENU } from "@/app/_menuConfig/menu";
-// import { sendSMS } from "@/app/_lib/twilio";
+
 import { sendOrderEmail } from "@/app/_lib/email";
 import { prisma } from "@/app/_lib/prisma";
 
 export async function POST() {
+  //Ratelimiter (before cookie)
+  const ip = (await headers()).get("x-forwarded-for") ?? "anonymous";
+  const { success } = await orderLimit.limit(ip);
+  if (!success) {
+    return NextResponse.json({ error: "Too many requests" }, { status: 429 });
+  }
+
   const cookieStore = await cookies();
+
+  //before anything verify the csrf token
+  const csrfToken = cookieStore.get("csrf_token")?.value;
+  const headerToken = (await headers()).get("x-csrf-token");
+  if (!csrfToken || csrfToken !== headerToken) {
+    return NextResponse.json({ error: "Invalid CSRF" }, { status: 403 });
+  }
+  console.log(`csrf tookens match?: ${csrfToken === headerToken}`);
+
+  //Now get user Order from the other cookie
   const cookie = cookieStore.get("order_draft");
   if (!cookie) return NextResponse.json({}, { status: 403 });
 
@@ -28,34 +50,42 @@ export async function POST() {
     els.push(`- ${MENU[item.productId].label} x${item.quantity}`);
   }
 
-  //persit order to DB
-  const order = await prisma.order.create({
-    data: {
-      customerName: name,
-      customerPhone: phone,
-      deliveryOption,
-      address: isDelivery ? address : null,
-      notes,
-      total: isDelivery ? orderDraft.total + 5 : orderDraft.total,
-      status: "PENDING",
-      items: {
-        create: orderDraft.menuItems.map((item) => ({
-          productId: item.productId,
-          label: MENU[item.productId].label,
-          price: MENU[item.productId].price,
-          quantity: item.quantity,
-        })),
-      },
-    },
-  });
+  //Recalculate order total server-side
+  const computedTotal = orderDraft.menuItems.reduce((sum, item) => {
+    return sum + MENU[item.productId].price * item.quantity;
+  }, 0);
 
-  // const fullOrder = await prisma.order.findUnique({
-  //   where: {id: order.id},
-  //   include: {items: true}
-  // })
+  //persit order to DB
+
+  try {
+    await prisma.$transaction(async (tx) => {
+      await tx.order.create({
+        data: {
+          customerName: name,
+          customerPhone: phone,
+          deliveryOption,
+          address: isDelivery ? address : null,
+          notes,
+          total: isDelivery ? computedTotal + 5 : computedTotal,
+          status: "PENDING",
+          items: {
+            create: orderDraft.menuItems.map((item) => ({
+              productId: item.productId,
+              label: MENU[item.productId].label,
+              price: MENU[item.productId].price,
+              quantity: item.quantity,
+            })),
+          },
+        },
+      });
+    });
+  } catch (err) {
+    console.log("DB error:", err);
+    return NextResponse.json({ error: "Order failed" }, { status: 500 });
+  }
 
   //Order-ID timestamp & ETA
-  const orderId = order.id;
+  const orderId = Date.now();
   const timestamp = new Date().toLocaleString("en-US", {
     dateStyle: "medium",
     timeStyle: "short",
@@ -77,9 +107,9 @@ export async function POST() {
   🧾Order: \n${els.join("\n")}
   ${notes ? `📝 NOTES: ${notes}` : ""}
 
-  💰 Subtotal: ${orderDraft.total}
+  💰 Subtotal: ${computedTotal}
   ${isDelivery ? `🚚 Delivery: +5.00` : "\t------------"}
-  💵 Total: ${isDelivery ? orderDraft.total + 5 : orderDraft.total}
+  💵 Total: ${isDelivery ? computedTotal + 5 : computedTotal}
   
   Thank you for your order 🙏
   ETA: ${ETA}`;
@@ -99,14 +129,20 @@ export async function POST() {
   //   return NextResponse.json({ error: "Failed to sent sms" }, { status: 500 });
   // }
 
-  //(option-3): Send via SendGrid Email
+  //(Option-3): Send email to admin via SendGrid
   try {
     await sendOrderEmail(receipt);
     console.log("Email sent successfully!", receipt);
-    cookieStore.delete("order_draft"); //Delete the cookie
+    cookieStore.delete("order_draft"); //Delete the draft cookie
+    cookieStore.delete("csrf_token"); //Delete csrf token
     return NextResponse.json({}, { status: 200 });
   } catch (err) {
     console.error("Failed to send Email", err);
     return NextResponse.json({ error: err }, { status: 500 });
   }
+
+  // const fullOrder = await prisma.order.findUnique({
+  //   where: {id: order.id},
+  //   include: {items: true}
+  // })
 }

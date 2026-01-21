@@ -1,7 +1,8 @@
 //order/review/page.tsx
-import { OrderDraftType } from "@/app/_models/order";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+
+import { OrderDraftType } from "@/app/_models/order";
 import OrderPriceDetails from "@/app/_components/OrderPriceDetails";
 import { MENU } from "@/app/_menuConfig/menu";
 import PageTransition from "@/app/_components/ui/PageTransition";
@@ -15,6 +16,10 @@ export default async function ReviewPage() {
 
   const orderDraft: OrderDraftType = JSON.parse(cookie.value);
   if (!orderDraft.menuItems.length) redirect("/order");
+
+  //Get csrfToken
+  const csrfToken = cookieStore.get("csrf_token")?.value;
+  if (!csrfToken) redirect("/order");
 
   return (
     <PageTransition>
@@ -61,7 +66,7 @@ export default async function ReviewPage() {
               Edit Order
             </a>
 
-            <SendOrderForm />
+            <SendOrderForm csrfToken={csrfToken} />
           </div>
         </div>
       </div>
