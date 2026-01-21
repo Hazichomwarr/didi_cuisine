@@ -12,12 +12,14 @@ import { MenuItemType, MenuKEY } from "../_models/order";
 import Link from "next/link";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { LoaderCircle } from "lucide-react";
 
 type Props = { initialState: InitialStateType };
 
 export default function OrderForm({ initialState }: Props) {
   const router = useRouter();
   const [errors, setErrors] = useState(initialState.errors);
+  const [loading, setLoading] = useState(false);
 
   const values = initialState.values;
   console.log("initial state:", values);
@@ -25,6 +27,9 @@ export default function OrderForm({ initialState }: Props) {
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+
+    if (loading) return;
+    setLoading(true);
 
     const formData = new FormData(e.currentTarget);
     const payload = Object.fromEntries(formData.entries());
@@ -34,13 +39,17 @@ export default function OrderForm({ initialState }: Props) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     });
-    console.log("res:", res);
+    // console.log("res:", res);
 
     if (!res.ok) {
+      setLoading(false);
+
       const data = await res.json();
       setErrors(data.errors);
       return;
     }
+    //stop Loader before opening modal
+    setLoading(false);
     router.push("order/review");
   }
 
@@ -142,7 +151,13 @@ export default function OrderForm({ initialState }: Props) {
 
       <div className="flex flex-col items-center gap-2 w-full">
         <Button className="w-full" variant="tertiary" type="submit">
-          Submit Order
+          {loading ? (
+            <span className="animate-spin">
+              <LoaderCircle />
+            </span>
+          ) : (
+            "Submit Order"
+          )}
         </Button>
         <Link
           href="/"
