@@ -1,33 +1,30 @@
 //app/order/page.tsx
 import { cookies } from "next/headers";
+
 import OrderForm2 from "../_components/OrderForm2";
 import { OrderDraftType, MenuKEY } from "../_models/order";
 import PageTransition from "../_components/ui/PageTransition";
-import { MENU } from "../_menuConfig/menu"
+import { MENU } from "../_menuConfig/menu";
 
 export type InitialStateType = {
   errors: Record<string, string>;
   values: Omit<OrderDraftType, "createdAt">;
 };
 
-export default async function OrderPage({searchParams}: {
+export default async function OrderPage({
+  searchParams,
+}: {
   searchParams: {
     add?: MenuKEY;
-  }}) {
+  };
+}) {
   const cookieStore = await cookies();
   const cookie = cookieStore.get("order_draft");
 
   //get query from url if any
   const query = await searchParams;
   const sanitizedQuery: MenuKEY | null =
-    query.add && query.add in MENU
-      ? query.add
-      : null;
-
-  // const selectedItem =
-  // query?.add && MENU[query.add as MenuKEY]
-  //   ? [{ productId: query.add a, quantity: 1 }]
-  //   : [];
+    query.add && query.add in MENU ? query.add : null;
 
   const initialState: InitialStateType = cookie
     ? {
@@ -44,7 +41,9 @@ export default async function OrderPage({searchParams}: {
             address: "",
             notes: "",
           },
-          menuItems: sanitizedQuery ? [{ productId: sanitizedQuery, quantity: 1 }] : [],
+          menuItems: sanitizedQuery
+            ? [{ productId: sanitizedQuery, quantity: 1 }]
+            : [],
           total: 0,
         },
       };

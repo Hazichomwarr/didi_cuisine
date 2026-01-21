@@ -20,7 +20,7 @@ export default function OrderForm({ initialState }: Props) {
   const [errors, setErrors] = useState(initialState.errors);
 
   const values = initialState.values;
-  console.log("initial state:", values)
+  console.log("initial state:", values);
   const MenuKeys = Object.keys(MENU) as MenuKEY[];
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -78,7 +78,7 @@ export default function OrderForm({ initialState }: Props) {
         {MenuKeys.map((key) => {
           const { id, label, price } = MENU[key] as MenuItemType;
           return (
-              <MenuItem
+            <MenuItem
               key={id}
               item={id}
               label={label}
