@@ -20,6 +20,7 @@ export default async function OrderPage({
 }) {
   const cookieStore = await cookies();
   const cookie = cookieStore.get("order_draft");
+  console.log("cookie from order page via edit order:", cookie)
 
   //get query from url if any
   const query = await searchParams;
@@ -29,7 +30,7 @@ export default async function OrderPage({
   const initialState: InitialStateType = cookie
     ? {
         errors: {},
-        values: JSON.parse(cookie.value) as Omit<OrderDraftType, "createdAt">,
+        values: JSON.parse(cookie.value.data) as Omit<OrderDraftType, "createdAt">,
       }
     : {
         errors: {},
