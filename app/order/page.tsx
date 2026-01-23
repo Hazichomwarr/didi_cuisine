@@ -19,8 +19,7 @@ export default async function OrderPage({
   };
 }) {
   const cookieStore = await cookies();
-  const parsed = cookieStore.get("order_draft");
-  const cookie = parsed?.data;
+  const cookie = cookieStore.get("order_draft");
   console.log("cookie from order page via edit order:", cookie);
 
   //get query from url if any
