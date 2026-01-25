@@ -32,5 +32,25 @@ export type OrderDraftType = {
   userInfos: UserInfoSanitized;
   menuItems: SanitizedOrderItem[];
   total: number;
-  createdAt: number;
+  createdAt: Date;
+};
+
+// ---------------DB TYPES-----------------------
+
+export type ItemDB = {
+  id: string;
+  label: string;
+  quantity: number;
+};
+
+export type FetchOrders = {
+  id: string;
+  customerName: string;
+  customerPhone: string;
+  deliveryOption: string;
+  total: number;
+  trackingNumber: number;
+  status: "PENDING" | "SENT" | "CONFIRMED" | "CANCELLED" | "READY_PICKUP";
+  createdAt: Date;
+  items: ItemDB[];
 };

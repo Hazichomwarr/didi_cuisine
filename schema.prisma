@@ -12,17 +12,19 @@ enum OrderStatus {
   SENT
   CONFIRMED
   CANCELLED
+  READY_PICKUP
 }
 
 model Order {
-  id             String      @id @default(cuid())
-  customerName   String
-  customerPhone  String       @db.VarChar(20)
-  deliveryOption String
-  address        String?
-  notes          String?
-  total          Float
-  status         OrderStatus @default(PENDING)
+  id              String      @id @default(cuid())
+  customerName    String
+  customerPhone   String       @db.VarChar(20)
+  deliveryOption  String
+  address         String?
+  notes           String?
+  total           Float
+  status          OrderStatus @default(PENDING)
+  trackingNumber  Float
   createdAt      DateTime    @default(now())
 
   items          OrderItem[]

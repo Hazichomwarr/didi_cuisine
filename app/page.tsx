@@ -48,6 +48,13 @@ export default function HomePage() {
 
             <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
               <Link
+                href="#menu"
+                className="rounded-full border border-neutral-600 px-8 py-3 text-neutral-200 transition hover:border-neutral-400 scroll-smooth"
+              >
+                View Menu
+              </Link>
+
+              <Link
                 href="/order"
                 className="rounded-full bg-amber-400 px-8 py-3 font-semibold text-neutral-900 transition hover:bg-amber-300"
               >
@@ -55,10 +62,10 @@ export default function HomePage() {
               </Link>
 
               <Link
-                href="#menu"
+                href="/order/status/tracking-infos"
                 className="rounded-full border border-neutral-600 px-8 py-3 text-neutral-200 transition hover:border-neutral-400 scroll-smooth"
               >
-                View Menu
+                Order Status
               </Link>
             </div>
           </div>

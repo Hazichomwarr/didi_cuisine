@@ -5,7 +5,7 @@
 import { NextResponse } from "next/server";
 import { headers, cookies } from "next/headers";
 import { orderLimit } from "@/app/_lib/rateLimit";
-import {verifyDraft} from "@/app/_lib/draftSignature"
+import { verifyDraft } from "@/app/_lib/draftSignature";
 
 import { OrderDraftType } from "@/app/_models/order";
 import { MENU } from "@/app/_menuConfig/menu";
@@ -14,7 +14,6 @@ import { sendOrderEmail } from "@/app/_lib/email";
 import { prisma } from "@/app/_lib/prisma";
 
 export async function POST() {
-
   //Ratelimiter (before cookie)
   const ip = (await headers()).get("x-forwarded-for") ?? "anonymous";
   const { success } = await orderLimit.limit(ip);
@@ -38,12 +37,12 @@ export async function POST() {
 
   const parsed = JSON.parse(cookie.value);
   if (!parsed?.data || !parsed?.sig) {
-    return NextResponse.json({error: "Invalid draft"}, {status: 403})
+    return NextResponse.json({ error: "Invalid draft" }, { status: 403 });
   }
   if (!verifyDraft(parsed.data, parsed.sig)) {
-    return NextResponse.json({error: "Draft tampered"}, {status: 403})
+    return NextResponse.json({ error: "Draft tampered" }, { status: 403 });
   }
-  console.log("order-draft and signedDraft values match!")
+  console.log("order-draft and signedDraft values match!");
 
   const orderDraft: OrderDraftType = parsed.data;
   if (!orderDraft.menuItems.length) {
@@ -64,6 +63,8 @@ export async function POST() {
     return sum + MENU[item.productId].price * item.quantity;
   }, 0);
 
+  //Tracking number
+  const trackingNumber = Number(Date.now().toString().slice(-7));
   //persit order to DB
 
   try {
@@ -77,6 +78,7 @@ export async function POST() {
           notes,
           total: isDelivery ? computedTotal + 5 : computedTotal,
           status: "PENDING",
+          trackingNumber,
           items: {
             create: orderDraft.menuItems.map((item) => ({
               productId: item.productId,
@@ -117,8 +119,10 @@ export async function POST() {
   ${notes ? `📝 NOTES: ${notes}` : ""}
 
   💰 Subtotal: ${computedTotal}
-  ${isDelivery ? `🚚 Delivery: +5.00` : "\t------------"}
+  ${isDelivery ? `🚚 Delivery: +5.00` : "---------------"}
   💵 Total: ${isDelivery ? computedTotal + 5 : computedTotal}
+
+  Your Order Tracking-Number: ${trackingNumber}
   
   Thank you for your order 🙏
   ETA: ${ETA}`;

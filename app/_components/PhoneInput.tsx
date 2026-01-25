@@ -24,7 +24,7 @@ export default function PhoneInput({ defaultValue, inputError, error }: Props) {
       <Input
         type="tel"
         name="phone"
-        placeholder="Phone: 000-000-0000"
+        placeholder="US Phone: 000-000-0000"
         inputError={inputError}
         error={error}
         onChange={(e) => setPhoneValue(formatPhone(e.target.value))}
