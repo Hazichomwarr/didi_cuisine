@@ -1,4 +1,5 @@
 //app/admin/orders/page.tsx
+import UpdateStatusForm from "@/app/_components/UpdateStatusForm";
 import { prisma } from "@/app/_lib/prisma";
 import { FetchOrders } from "@/app/_models/order";
 
@@ -20,7 +21,6 @@ export default async function AdminOrderPage() {
   return (
     <main>
       <h1 className="text-3xl font-bold mb-6">Orders</h1>
-
       <div className="space-y-6">
         {orders.map((order: FetchOrders) => (
           <div
@@ -45,7 +45,10 @@ export default async function AdminOrderPage() {
               ))}
             </ul>
 
-            <p className="mt-2 text-amber-400">Status: {order.status}</p>
+            <p className="mt-2 text-amber-400 flex gap-5 justify-start text-xl">
+              <span className="px-2 mb-5">Status: {order.status}</span>
+            </p>
+            <UpdateStatusForm orderId={order.id} />
           </div>
         ))}
       </div>

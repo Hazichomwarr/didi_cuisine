@@ -1,6 +1,7 @@
 //app/order/status/@modal/(.)order-status/page.tsx
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import { StatusType } from "@/app/_models/order";
 
 const STATUS_CONFIG = {
   PENDING: {
@@ -35,13 +36,6 @@ const STATUS_CONFIG = {
   },
 } as const;
 
-type StatusType =
-  | "PENDING"
-  | "SENT"
-  | "CONFIRMED"
-  | "CANCELLED"
-  | "READY_PICKUP";
-
 export default async function StatusModalPage({
   searchParams,
 }: {
@@ -49,7 +43,7 @@ export default async function StatusModalPage({
 }) {
   const sp = await searchParams;
   const status = sp?.status;
-  console.log("status:", status);
+
   if (!status || !(status in STATUS_CONFIG)) {
     redirect("/");
   }

@@ -37,6 +37,13 @@ export type OrderDraftType = {
 
 // ---------------DB TYPES-----------------------
 
+export type StatusType =
+  | "PENDING"
+  | "SENT"
+  | "CONFIRMED"
+  | "CANCELLED"
+  | "READY_PICKUP";
+
 export type ItemDB = {
   id: string;
   label: string;
@@ -50,7 +57,7 @@ export type FetchOrders = {
   deliveryOption: string;
   total: number;
   trackingNumber: number;
-  status: "PENDING" | "SENT" | "CONFIRMED" | "CANCELLED" | "READY_PICKUP";
+  status: StatusType;
   createdAt: Date;
   items: ItemDB[];
 };

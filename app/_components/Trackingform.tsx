@@ -34,19 +34,18 @@ export default function Trackingform() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     });
-    console.log("post-response:", res);
+
+    const data = await res.json();
 
     if (!res.ok) {
       setLoading(false);
-
-      const data = await res.json();
       setErrors(data.infosErrors);
       console.log("state error:", errors);
       return;
     }
 
-    const data = await res.json();
     console.log("data from client form:", data);
+
     //stop Loader before redirecting
     setLoading(false);
     router.push(`/order/status/order-status?status=${data.status}`);
