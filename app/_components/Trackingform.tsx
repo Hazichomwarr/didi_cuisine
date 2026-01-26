@@ -24,6 +24,8 @@ export default function Trackingform() {
     e.preventDefault();
 
     if (loading) return;
+    setLoading(true);
+
     const formData = new FormData(e.currentTarget);
     const payload = Object.fromEntries(formData.entries());
 

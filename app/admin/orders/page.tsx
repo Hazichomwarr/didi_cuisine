@@ -13,7 +13,9 @@ async function getOrders(): Promise<FetchOrders[]> {
 
 export default async function AdminOrderPage() {
   const orders = await getOrders();
-  if (!orders) <p>Failed to fetch Order.</p>;
+
+  if (!orders)
+    <p className="text-center text-2xl bg-amber-100">Failed to fetch Order.</p>;
 
   return (
     <main>
