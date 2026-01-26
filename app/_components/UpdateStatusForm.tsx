@@ -113,7 +113,9 @@ export default function UpdateStatusForm({ orderId }: { orderId: string }) {
             <button
               onClick={() => {
                 setIsUpdated(false);
-                router.push("/admin/orders");
+                setTimeout(() => {
+                  router.replace("/admin/orders", { scroll: false });
+                }, 300);
               }}
               className="w-full rounded-lg bg-black text-white py-2 cursor-pointer hover:bg-neutral-700"
             >
