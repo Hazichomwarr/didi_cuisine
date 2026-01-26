@@ -3,6 +3,8 @@ import UpdateStatusForm from "@/app/_components/UpdateStatusForm";
 import { prisma } from "@/app/_lib/prisma";
 import { FetchOrders } from "@/app/_models/order";
 
+export const dynamic = 'force-dynamic';
+
 async function getOrders(): Promise<FetchOrders[]> {
   return prisma.order.findMany({
     orderBy: { createdAt: "desc" },
