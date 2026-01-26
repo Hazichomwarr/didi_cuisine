@@ -67,7 +67,7 @@ export default async function StatusModalPage({
         <p className="text-gray-600">{config.message}</p>
 
         <Link
-          href="/"
+          href="/order/status/tracking-infos"
           className="block w-full rounded-lg bg-black text-white py-2 mt-4 hover:bg-neutral-800 active:scale-95 transition"
         >
           Close
