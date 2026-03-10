@@ -141,8 +141,16 @@ export default function HomePage() {
 
         <footer className="mt-10 pb-2 text-center text-xs text-neutral-400">
           Created & designed by{" "}
-          <span className="text-amber-400 font-semibold">Hamza Mare</span> ©
-          2026
+          <span className="text-amber-400 font-semibold">
+            <a
+              href="https://hamzamare.dev"
+              target="_blank"
+              className="hover:text-amber-600 hover:underline"
+            >
+              Hamza Mare
+            </a>
+          </span>{" "}
+          © 2026
         </footer>
       </main>
     </PageTransition>
